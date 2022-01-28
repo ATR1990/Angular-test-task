@@ -1,9 +1,11 @@
-import {Component, Directive, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Directive, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DATE_FORMATS} from "@angular/material/core";
 import {DatePipe} from "@angular/common";
-import {CarsService} from "../../services/cars.service";
 import {Router} from "@angular/router";
+
+import {MAT_DATE_FORMATS} from "@angular/material/core";
+
+import {CarsService} from "@services/cars.service";
 
 const MY_FORMAT_2 = {
   parse: {
@@ -30,7 +32,8 @@ export class CustomDateFormat2 {
 @Component({
   selector: 'app-car-create',
   templateUrl: './car-create.component.html',
-  styleUrls: ['./car-create.component.css']
+  styleUrls: ['./car-create.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CarCreateComponent implements OnInit {

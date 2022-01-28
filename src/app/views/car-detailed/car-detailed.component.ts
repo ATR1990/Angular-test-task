@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 
-import {CarsService} from "../../services/cars.service";
-import {CarInterface} from "../../types/car.interface";
+// @ts-ignore
+import {CarInterface} from "@types/car.interface";
+import {CarsService} from "@services/cars.service";
 
 @Component({
   selector: 'app-car-detailed',
   templateUrl: './car-detailed.component.html',
-  styleUrls: ['./car-detailed.component.css']
+  styleUrls: ['./car-detailed.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarDetailedComponent implements OnInit {
 

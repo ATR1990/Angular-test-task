@@ -1,20 +1,22 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
+
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
-import {CarsService} from "../../services/cars.service";
-import {ConfirmModalComponent} from "../confirm-modal/confirm-modal.component";
-import {CarInterface} from "../../types/car.interface";
+// @ts-ignore
+import {CarInterface} from "@types/car.interface";
+import {CarsService} from "@services/cars.service";
+import {ConfirmModalComponent} from "@views/confirm-modal/confirm-modal.component";
 
 @Component({
   selector: 'app-car',
   templateUrl: './car.component.html',
-  styleUrls: ['./car.component.css']
+  styleUrls: ['./car.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarComponent {
   @Input() car!: CarInterface
-  @Output() refresh = new EventEmitter()
 
   constructor(
     private router: Router,
@@ -52,7 +54,6 @@ export class CarComponent {
           verticalPosition: 'top',
         });
       }
-      this.refresh.emit()
     });
   }
 

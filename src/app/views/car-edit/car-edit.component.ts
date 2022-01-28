@@ -1,14 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {CarsService} from "../../services/cars.service";
-import {DatePipe} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
-import {CarInterface} from "../../types/car.interface";
+import {DatePipe} from "@angular/common";
+
+// @ts-ignore
+import {CarInterface} from "@types/car.interface";
+import {CarsService} from "@services/cars.service";
 
 @Component({
   selector: 'app-car-edit',
   templateUrl: './car-edit.component.html',
-  styleUrls: ['./car-edit.component.css']
+  styleUrls: ['./car-edit.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CarEditComponent implements OnInit {

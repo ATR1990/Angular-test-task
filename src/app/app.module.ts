@@ -19,13 +19,13 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import {MatExpansionModule} from "@angular/material/expansion";
 
 import {AppComponent} from './app.component';
-import {CarsComponent} from './views/cars/cars.component';
-import {CarComponent} from './views/car/car.component';
-import {CarEditComponent} from './views/car-edit/car-edit.component';
-import {CarCreateComponent, CustomDateFormat2} from './views/car-create/car-create.component';
-import {CarDetailedComponent} from './views/car-detailed/car-detailed.component';
-import {ConfirmModalComponent} from './views/confirm-modal/confirm-modal.component';
-import {SearchComponent} from './views/search/search.component';
+import {CarsComponent} from '@views/cars/cars.component';
+import {CarComponent} from '@views/car/car.component';
+import {CarEditComponent} from '@views/car-edit/car-edit.component';
+import {CarCreateComponent, CustomDateFormat2} from '@views/car-create/car-create.component';
+import {CarDetailedComponent} from '@views/car-detailed/car-detailed.component';
+import {ConfirmModalComponent} from '@views/confirm-modal/confirm-modal.component';
+import {SearchComponent} from '@views/search/search.component';
 
 @NgModule({
   declarations: [
