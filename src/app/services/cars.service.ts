@@ -11,35 +11,37 @@ import {CarInterface} from "@types/car.interface"
 })
 
 export class CarsService {
-  private url = 'http://localhost:3000/cars'
+  private baseUrl = 'http://localhost:3000/cars'
   private _refresh$ = new Subject<void>()
+  search$ = new Subject<string>()
 
   constructor(private http: HttpClient) {
   }
 
-  get refresh$() {
+  get refresh$(): Subject<void> {
     return this._refresh$
   }
 
   getAllCars(q?: any): Observable<CarInterface[]> {
-    return this.http.get<CarInterface[]>(q ? `${this.url}/?q=${q}` : this.url)
+    let url = q ? `${this.baseUrl}/?q=${q}` : this.baseUrl
+    return this.http.get<CarInterface[]>(url)
   }
 
   getCar(id: number): Observable<CarInterface> {
-    return this.http.get<CarInterface>(`${this.url}/${id}`)
+    return this.http.get<CarInterface>(`${this.baseUrl}/${id}`)
   }
 
   createCar(dto: CarInterface): Observable<CarInterface> {
-    return this.http.post<CarInterface>(this.url, dto)
+    return this.http.post<CarInterface>(this.baseUrl, dto)
   }
 
   editCar(dto: CarInterface): Observable<CarInterface> {
-    return this.http.put<CarInterface>(`${this.url}/${dto.id}`, dto)
+    return this.http.put<CarInterface>(`${this.baseUrl}/${dto.id}`, dto)
   }
 
   deleteCar(id: number): Observable<CarInterface> {
     return this.http
-      .delete<CarInterface>(`${this.url}/${id}`)
+      .delete<CarInterface>(`${this.baseUrl}/${id}`)
       .pipe(tap(() => this._refresh$.next()))
   }
 

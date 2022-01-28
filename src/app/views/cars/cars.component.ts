@@ -27,17 +27,12 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.autoRefresh()
     this.getAllCars()
+    this.autoRefresh()
+    this.search()
   }
 
-  autoRefresh() {
-    this.carsService.refresh$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => this.getAllCars())
-  }
-
-  getAllCars(q?: any) {
+  private getAllCars(q?: string): void {
     this.carsService.getAllCars(q)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((cars: CarInterface[]) => {
@@ -46,11 +41,23 @@ export class CarsComponent implements OnInit, OnDestroy {
       })
   }
 
+  private autoRefresh(): void {
+    this.carsService.refresh$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.getAllCars())
+  }
+
+  private search(): void {
+    this.carsService.search$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => this.getAllCars(data))
+  }
+
   trackByFn(index: number, car: CarInterface): number {
     return car.id
   }
 
-  createCar() {
+  createCar(): void {
     this.router?.navigate(['/create'])
   }
 

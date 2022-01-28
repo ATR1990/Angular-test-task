@@ -1,5 +1,7 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
+
+import {CarsService} from "@services/cars.service";
 
 @Component({
   selector: 'app-search',
@@ -8,26 +10,25 @@ import {FormControl, FormGroup} from "@angular/forms";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent implements OnInit {
-  filterForm!: FormGroup;
-  @Output() filter = new EventEmitter()
+  filterForm!: FormGroup
 
-  constructor() {
+  constructor(private carsService: CarsService) {
   }
 
   ngOnInit(): void {
     this.filterForm = new FormGroup({
-      search: new FormControl(null)
+      search: new FormControl('')
     })
   }
 
-  filterData() {
-    const data: any = this.filterForm.getRawValue();
-    this.filter.emit(Object.values(data))
+  filterData(): void {
+    const data: any = this.filterForm.getRawValue()
+    this.carsService.search$.next(data.search)
   }
 
-  resetFilter() {
-    this.filterForm.reset();
-    this.filter.emit()
+  resetFilter(): void {
+    this.filterForm.reset()
+    this.carsService.search$.next()
   }
 
 }
