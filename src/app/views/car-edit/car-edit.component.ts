@@ -1,11 +1,13 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {DatePipe} from "@angular/common";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from "@angular/core"
+import {FormBuilder, FormGroup, Validators} from "@angular/forms"
+import {ActivatedRoute, Router} from "@angular/router"
+import {DatePipe} from "@angular/common"
+import {takeUntil} from "rxjs/operators"
+import {Subject} from "rxjs"
 
 // @ts-ignore
-import {CarInterface} from "@types/car.interface";
-import {CarsService} from "@services/cars.service";
+import {CarInterface} from "@types/car.interface"
+import {CarsService} from "@services/cars.service"
 
 @Component({
   selector: 'app-car-edit',
@@ -14,10 +16,12 @@ import {CarsService} from "@services/cars.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CarEditComponent implements OnInit {
-  form!: FormGroup;
-  minDate!: Date;
+export class CarEditComponent implements OnInit, OnDestroy {
+  form!: FormGroup
+  minDate!: Date
   id: any
+  format: string = 'yyyy-MM-dd'
+  private unsubscribe$ = new Subject()
 
   constructor(
     private carsService: CarsService,
@@ -30,14 +34,7 @@ export class CarEditComponent implements OnInit {
 
   ngOnInit(): void {
     this._createForm()
-
-    this.id = this.route.snapshot.params.id
-
-    if (this.id) {
-      this.carsService.getCar(this.id).subscribe((car: CarInterface) => {
-        this._setValues(car)
-      })
-    }
+    this._getCar()
   }
 
   private _createForm(): void {
@@ -72,21 +69,36 @@ export class CarEditComponent implements OnInit {
     this.form.controls['Year'].setValue(Year)
   }
 
+  private _getCar(): void {
+    this.id = this.route.snapshot.params.id
+
+    if (this.id) {
+      this.carsService.getCar(this.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((car: CarInterface) => this._setValues(car))
+    }
+  }
+
   save(): void {
     const dto: any = this.form.getRawValue()
     if (dto.Year) {
-      dto.Year = this.datePipe.transform(dto.Year, 'yyyy-MM-dd')
+      dto.Year = this.datePipe.transform(dto.Year, this.format)
     }
 
     dto.id = +this.id
 
-    this.carsService.editCar(dto).subscribe(
-      () => this.router.navigate(['/'])
-    )
+    this.carsService.editCar(dto)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.router.navigate(['/']))
   }
 
   goToMainPage(): void {
     this.router?.navigate(['/'])
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 
 }

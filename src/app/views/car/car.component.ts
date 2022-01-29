@@ -1,13 +1,15 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {Router} from "@angular/router";
+import {ChangeDetectionStrategy, Component, Input, OnDestroy} from '@angular/core'
+import {Router} from "@angular/router"
+import {Subject} from "rxjs"
+import {takeUntil} from "rxjs/operators"
 
-import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog"
+import {MatSnackBar} from "@angular/material/snack-bar"
 
 // @ts-ignore
-import {CarInterface} from "@types/car.interface";
-import {CarsService} from "@services/cars.service";
-import {ConfirmModalComponent} from "@views/confirm-modal/confirm-modal.component";
+import {CarInterface} from "@types/car.interface"
+import {CarsService} from "@services/cars.service"
+import {ConfirmModalComponent} from "@views/confirm-modal/confirm-modal.component"
 
 @Component({
   selector: 'app-car',
@@ -15,14 +17,16 @@ import {ConfirmModalComponent} from "@views/confirm-modal/confirm-modal.componen
   styleUrls: ['./car.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CarComponent {
+export class CarComponent implements OnDestroy {
   @Input() car!: CarInterface
+  dialogRef: any
+  private unsubscribe$ = new Subject()
 
   constructor(
     private router: Router,
     private carsService: CarsService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -34,29 +38,45 @@ export class CarComponent {
     this.router?.navigate(['/detailed-view', `${id}`])
   }
 
+  private _deleteCar(id: number): void {
+    this.carsService.deleteCar(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        () => this.dialogRef.close('deleted'),
+        () => this.dialogRef.close()
+      )
+  }
+
+  private _openSnackBar(): void {
+    this.snackBar.open('Успешно удалено', 'Машина', {
+      duration: 2000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top'
+    })
+  }
+
   openConfirmModal(id: number): void {
-    const dialogRef = this.dialog.open(ConfirmModalComponent, {
+    this.dialogRef = this.dialog.open(ConfirmModalComponent, {
       data: {text: 'Вы действительно хотите удалить машину?', color: 'warn'},
       disableClose: true
     })
 
-    dialogRef.componentInstance.onConfirm.subscribe(() => {
-      this.carsService.deleteCar(id).subscribe(() => {
-        dialogRef.close('deleted')
-      }, error => {
-        dialogRef.close();
-      })
-    })
+    this.dialogRef.componentInstance.onConfirm
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this._deleteCar(id))
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'deleted') {
-        this.snackBar.open('Успешно удалено', 'Машина', {
-          duration: 2000,
-          horizontalPosition: 'end',
-          verticalPosition: 'top',
-        })
-      }
-    })
+    this.dialogRef.afterClosed()
+      // .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result: string) => {
+        if (result === 'deleted') {
+          this._openSnackBar()
+        }
+      })
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 
 }

@@ -1,7 +1,9 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core'
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from "@angular/core"
 import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {DatePipe} from "@angular/common"
 import {Router} from "@angular/router"
+import {takeUntil} from "rxjs/operators"
+import {Subject} from "rxjs"
 
 import {CarsService} from "@services/cars.service"
 
@@ -12,10 +14,11 @@ import {CarsService} from "@services/cars.service"
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CarCreateComponent implements OnInit {
-  form!: FormGroup;
-  minDate!: Date;
+export class CarCreateComponent implements OnInit, OnDestroy {
+  form!: FormGroup
+  minDate!: Date
   format: string = 'yyyy-MM-dd'
+  private unsubscribe$ = new Subject()
 
   constructor(
     private carsService: CarsService,
@@ -58,9 +61,9 @@ export class CarCreateComponent implements OnInit {
       dto.Year = this.datePipe.transform(dto.Year, this.format)
     }
 
-    this.carsService.createCar(dto).subscribe(
-      () => this.router.navigate(['/'])
-    )
+    this.carsService.createCar(dto)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.router.navigate(['/']))
   }
 
   getErrorMessage(controlName: string): string {
@@ -76,6 +79,11 @@ export class CarCreateComponent implements OnInit {
 
   goToMainPage(): void {
     this.router?.navigate(['/'])
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 
 }

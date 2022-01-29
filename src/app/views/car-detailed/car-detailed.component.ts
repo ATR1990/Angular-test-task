@@ -1,9 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core'
+import {ActivatedRoute, Router} from "@angular/router"
+import {takeUntil} from "rxjs/operators"
+import {Subject} from "rxjs"
 
 // @ts-ignore
-import {CarInterface} from "@types/car.interface";
-import {CarsService} from "@services/cars.service";
+import {CarInterface} from "@types/car.interface"
+import {CarsService} from "@services/cars.service"
 
 @Component({
   selector: 'app-car-detailed',
@@ -11,9 +13,10 @@ import {CarsService} from "@services/cars.service";
   styleUrls: ['./car-detailed.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CarDetailedComponent implements OnInit {
+export class CarDetailedComponent implements OnInit, OnDestroy {
   car!: CarInterface;
   id: any
+  private unsubscribe$ = new Subject()
 
   constructor(
     private carsService: CarsService,
@@ -26,12 +29,19 @@ export class CarDetailedComponent implements OnInit {
     this.id = this.route.snapshot.params.id;
 
     if (this.id) {
-      this.carsService.getCar(this.id).subscribe((car: CarInterface) => this.car = car)
+      this.carsService.getCar(this.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((car: CarInterface) => this.car = car)
     }
   }
 
   goToMainPage() {
     this.router?.navigate(['/'])
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 
 }
