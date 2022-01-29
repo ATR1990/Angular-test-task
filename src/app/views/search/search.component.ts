@@ -9,6 +9,7 @@ import {CarsService} from "@services/cars.service"
   styleUrls: ['./search.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class SearchComponent implements OnInit {
   filterForm!: FormGroup
 

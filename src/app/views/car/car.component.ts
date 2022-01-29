@@ -20,7 +20,7 @@ import {ConfirmModalComponent} from "@views/confirm-modal/confirm-modal.componen
 export class CarComponent implements OnDestroy {
   @Input() car!: CarInterface
   dialogRef: any
-  private unsubscribe$ = new Subject()
+  private _unsubscribe$ = new Subject()
 
   constructor(
     private router: Router,
@@ -38,13 +38,26 @@ export class CarComponent implements OnDestroy {
     this.router?.navigate(['/detailed-view', `${id}`])
   }
 
+  private _openDialog(): void {
+    this.dialogRef = this.dialog.open(ConfirmModalComponent, {
+      data: {text: 'Вы действительно хотите удалить машину?', color: 'warn'},
+      disableClose: true
+    })
+  }
+
   private _deleteCar(id: number): void {
     this.carsService.deleteCar(id)
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntil(this._unsubscribe$))
       .subscribe(
         () => this.dialogRef.close('deleted'),
         () => this.dialogRef.close()
       )
+  }
+
+  private _onConfirm(id: number): void {
+    this.dialogRef.componentInstance.onConfirm
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(() => this._deleteCar(id))
   }
 
   private _openSnackBar(): void {
@@ -55,16 +68,7 @@ export class CarComponent implements OnDestroy {
     })
   }
 
-  openConfirmModal(id: number): void {
-    this.dialogRef = this.dialog.open(ConfirmModalComponent, {
-      data: {text: 'Вы действительно хотите удалить машину?', color: 'warn'},
-      disableClose: true
-    })
-
-    this.dialogRef.componentInstance.onConfirm
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => this._deleteCar(id))
-
+  private _afterClosed(): void {
     this.dialogRef.afterClosed()
       // .pipe(takeUntil(this.unsubscribe$))
       .subscribe((result: string) => {
@@ -74,9 +78,15 @@ export class CarComponent implements OnDestroy {
       })
   }
 
+  openConfirmModal(id: number): void {
+    this._openDialog()
+    this._onConfirm(id)
+    this._afterClosed()
+  }
+
   ngOnDestroy(): void {
-    this.unsubscribe$.next()
-    this.unsubscribe$.complete()
+    this._unsubscribe$.next()
+    this._unsubscribe$.complete()
   }
 
 }

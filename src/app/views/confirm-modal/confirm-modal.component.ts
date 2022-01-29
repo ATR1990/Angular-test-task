@@ -8,6 +8,7 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog"
   styleUrls: ['./confirm-modal.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class ConfirmModalComponent {
   onConfirm = new EventEmitter()
 

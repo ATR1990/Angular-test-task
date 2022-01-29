@@ -17,7 +17,7 @@ import {CarsService} from "@services/cars.service"
 
 export class CarsComponent implements OnInit, OnDestroy {
   cars: CarInterface[] = [];
-  private unsubscribe$ = new Subject()
+  private _unsubscribe$ = new Subject()
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -27,30 +27,30 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getAllCars()
-    this.autoRefresh()
-    this.search()
+    this._getAllCars()
+    this._autoRefresh()
+    this._search()
   }
 
-  private getAllCars(q?: string): void {
+  private _getAllCars(q?: string): void {
     this.carsService.getAllCars(q)
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntil(this._unsubscribe$))
       .subscribe((cars: CarInterface[]) => {
         this.cars = cars.reverse()
         this.changeDetectorRef.markForCheck()
       })
   }
 
-  private autoRefresh(): void {
+  private _autoRefresh(): void {
     this.carsService.refresh$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => this.getAllCars())
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(() => this._getAllCars())
   }
 
-  private search(): void {
+  private _search(): void {
     this.carsService.search$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => this.getAllCars(data))
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(data => this._getAllCars(data))
   }
 
   trackByFn(index: number, car: CarInterface): number {
@@ -62,8 +62,8 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next()
-    this.unsubscribe$.complete()
+    this._unsubscribe$.next()
+    this._unsubscribe$.complete()
   }
 
 }

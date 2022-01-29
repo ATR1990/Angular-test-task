@@ -13,10 +13,11 @@ import {CarsService} from "@services/cars.service"
   styleUrls: ['./car-detailed.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class CarDetailedComponent implements OnInit, OnDestroy {
   car!: CarInterface;
   id: any
-  private unsubscribe$ = new Subject()
+  private _unsubscribe$ = new Subject()
 
   constructor(
     private carsService: CarsService,
@@ -26,11 +27,15 @@ export class CarDetailedComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._getCar()
+  }
+
+  private _getCar() {
     this.id = this.route.snapshot.params.id;
 
     if (this.id) {
       this.carsService.getCar(this.id)
-        .pipe(takeUntil(this.unsubscribe$))
+        .pipe(takeUntil(this._unsubscribe$))
         .subscribe((car: CarInterface) => this.car = car)
     }
   }
@@ -40,8 +45,8 @@ export class CarDetailedComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next()
-    this.unsubscribe$.complete()
+    this._unsubscribe$.next()
+    this._unsubscribe$.complete()
   }
 
 }

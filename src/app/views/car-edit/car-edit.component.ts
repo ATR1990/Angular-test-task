@@ -21,7 +21,7 @@ export class CarEditComponent implements OnInit, OnDestroy {
   minDate!: Date
   id: any
   format: string = 'yyyy-MM-dd'
-  private unsubscribe$ = new Subject()
+  private _unsubscribe$ = new Subject()
 
   constructor(
     private carsService: CarsService,
@@ -39,22 +39,34 @@ export class CarEditComponent implements OnInit, OnDestroy {
 
   private _createForm(): void {
     this.form = this.fb.group({
-      Acceleration: [null, [ Validators.required ]],
-      Currency: ['', [ Validators.required ]],
-      Cylinders: [null, [ Validators.required ]],
-      Displacement: [null, [ Validators.required ]],
-      Horsepower: [null, [ Validators.required ]],
-      Miles_per_Gallon: [null, [ Validators.required ]],
-      Name: ['', [ Validators.required ]],
-      Origin: ['', [ Validators.required ]],
-      Price: [null, [ Validators.required ]],
-      Weight_in_lbs: [null, [ Validators.required ]],
-      Year: [null, [ Validators.required ]]
+      Acceleration: [null, [Validators.required]],
+      Currency: ['', [Validators.required]],
+      Cylinders: [null, [Validators.required]],
+      Displacement: [null, [Validators.required]],
+      Horsepower: [null, [Validators.required]],
+      Miles_per_Gallon: [null, [Validators.required]],
+      Name: ['', [Validators.required]],
+      Origin: ['', [Validators.required]],
+      Price: [null, [Validators.required]],
+      Weight_in_lbs: [null, [Validators.required]],
+      Year: [null, [Validators.required]]
     })
   }
 
   private _setValues(car: CarInterface): void {
-    const { Acceleration, Currency, Cylinders, Displacement, Horsepower, Miles_per_Gallon, Name, Origin, Price, Weight_in_lbs, Year } = car
+    const {
+      Acceleration,
+      Currency,
+      Cylinders,
+      Displacement,
+      Horsepower,
+      Miles_per_Gallon,
+      Name,
+      Origin,
+      Price,
+      Weight_in_lbs,
+      Year
+    } = car
 
     this.form.controls['Acceleration'].setValue(Acceleration)
     this.form.controls['Currency'].setValue(Currency)
@@ -74,22 +86,26 @@ export class CarEditComponent implements OnInit, OnDestroy {
 
     if (this.id) {
       this.carsService.getCar(this.id)
-        .pipe(takeUntil(this.unsubscribe$))
+        .pipe(takeUntil(this._unsubscribe$))
         .subscribe((car: CarInterface) => this._setValues(car))
     }
   }
 
+  private _editCar(dto: CarInterface): void {
+    this.carsService.editCar(dto)
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(() => this.router.navigate(['/']))
+  }
+
   save(): void {
     const dto: any = this.form.getRawValue()
+    dto.id = +this.id
+
     if (dto.Year) {
       dto.Year = this.datePipe.transform(dto.Year, this.format)
     }
 
-    dto.id = +this.id
-
-    this.carsService.editCar(dto)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => this.router.navigate(['/']))
+    this._editCar(dto)
   }
 
   goToMainPage(): void {
@@ -97,8 +113,8 @@ export class CarEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next()
-    this.unsubscribe$.complete()
+    this._unsubscribe$.next()
+    this._unsubscribe$.complete()
   }
 
 }
