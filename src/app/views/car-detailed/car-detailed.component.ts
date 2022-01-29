@@ -12,7 +12,6 @@ import {CarsService} from "@services/cars.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarDetailedComponent implements OnInit {
-
   car!: CarInterface;
   id: any
 
@@ -27,14 +26,12 @@ export class CarDetailedComponent implements OnInit {
     this.id = this.route.snapshot.params.id;
 
     if (this.id) {
-      this.carsService.getCar(this.id).subscribe(
-        (car: CarInterface) => this.car = car
-      )
+      this.carsService.getCar(this.id).subscribe((car: CarInterface) => this.car = car)
     }
   }
 
   goToMainPage() {
-    this.router.navigate(['/'])
+    this.router?.navigate(['/'])
   }
 
 }

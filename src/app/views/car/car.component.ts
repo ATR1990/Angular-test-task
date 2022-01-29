@@ -26,35 +26,37 @@ export class CarComponent {
   ) {
   }
 
-  editCar(id: number) {
-    this.router.navigate(['/edit', `${id}`])
+  editCar(id: number): void {
+    this.router?.navigate(['/edit', `${id}`])
   }
 
-  detailedViewCar(id: number) {
-    this.router.navigate(['/detailed-view', `${id}`])
+  detailedViewCar(id: number): void {
+    this.router?.navigate(['/detailed-view', `${id}`])
   }
 
-  openConfirmModal(id: number) {
+  openConfirmModal(id: number): void {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
       data: {text: 'Вы действительно хотите удалить машину?', color: 'warn'},
       disableClose: true
-    });
+    })
+
     dialogRef.componentInstance.onConfirm.subscribe(() => {
       this.carsService.deleteCar(id).subscribe(() => {
-        dialogRef.close('deleted');
+        dialogRef.close('deleted')
       }, error => {
         dialogRef.close();
-      });
-    });
+      })
+    })
+
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'deleted') {
         this.snackBar.open('Успешно удалено', 'Машина', {
           duration: 2000,
           horizontalPosition: 'end',
           verticalPosition: 'top',
-        });
+        })
       }
-    });
+    })
   }
 
 }

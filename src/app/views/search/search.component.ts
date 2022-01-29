@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 import {CarsService} from "@services/cars.service";
 
@@ -12,12 +12,19 @@ import {CarsService} from "@services/cars.service";
 export class SearchComponent implements OnInit {
   filterForm!: FormGroup
 
-  constructor(private carsService: CarsService) {
+  constructor(
+    private carsService: CarsService,
+    private fb: FormBuilder
+  ) {
   }
 
   ngOnInit(): void {
-    this.filterForm = new FormGroup({
-      search: new FormControl('')
+    this._createForm()
+  }
+
+  private _createForm(): void {
+    this.filterForm = this.fb.group({
+      search: ''
     })
   }
 

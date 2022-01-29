@@ -1,33 +1,9 @@
-import {ChangeDetectionStrategy, Component, Directive, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DatePipe} from "@angular/common";
-import {Router} from "@angular/router";
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core'
+import {FormBuilder, FormGroup, Validators} from "@angular/forms"
+import {DatePipe} from "@angular/common"
+import {Router} from "@angular/router"
 
-import {MAT_DATE_FORMATS} from "@angular/material/core";
-
-import {CarsService} from "@services/cars.service";
-
-const MY_FORMAT_2 = {
-  parse: {
-    dateInput: 'dd.MM.YYYY',
-  },
-  display: {
-    dateInput: 'DD.MM.YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
-
-@Directive({
-  selector: '[dateFormat2]',
-  providers: [
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMAT_2},
-  ],
-})
-
-export class CustomDateFormat2 {
-}
+import {CarsService} from "@services/cars.service"
 
 @Component({
   selector: 'app-car-create',
@@ -39,75 +15,67 @@ export class CustomDateFormat2 {
 export class CarCreateComponent implements OnInit {
   form!: FormGroup;
   minDate!: Date;
+  format: string = 'yyyy-MM-dd'
 
   constructor(
     private carsService: CarsService,
     private datePipe: DatePipe,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {
   }
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      Acceleration: new FormControl(null, [
-        Validators.required
-      ]),
-      Currency: new FormControl('', [
-        Validators.required
-      ]),
-      Cylinders: new FormControl(null, [
-        Validators.required
-      ]),
-      Displacement: new FormControl(null, [
-        Validators.required
-      ]),
-      Horsepower: new FormControl(null, [
-        Validators.required, Validators.min(1)
-      ]),
-      Miles_per_Gallon: new FormControl(null, [
-        Validators.required
-      ]),
-      Name: new FormControl('', [
-        Validators.required, Validators.minLength(3), Validators.maxLength(50)
-      ]),
-      Origin: new FormControl('', [
-        Validators.required
-      ]),
-      Price: new FormControl(null, [
-        Validators.required
-      ]),
-      Weight_in_lbs: new FormControl(null, [
-        Validators.required
-      ]),
-      Year: new FormControl(null, [
-        Validators.required
-      ])
+    this._createForm()
+  }
+
+  private _createForm(): void {
+    this.form = this.fb.group({
+      Acceleration: [null, [ Validators.required ]],
+      Currency: ['', [ Validators.required ]],
+      Cylinders: [null, [ Validators.required ]],
+      Displacement: [null, [ Validators.required ]],
+      Horsepower: [null, [
+        Validators.required,
+        Validators.min(1)
+      ]],
+      Miles_per_Gallon: [null, [ Validators.required ]],
+      Name: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50)
+      ]],
+      Origin: ['', [ Validators.required ]],
+      Price: [null, [ Validators.required ]],
+      Weight_in_lbs: [null, [ Validators.required ]],
+      Year: [null, [ Validators.required ]]
     })
   }
 
-  save() {
-    const dto: any = this.form.getRawValue();
+  save(): void {
+    const dto: any = this.form.getRawValue()
     if (dto.Year) {
-      dto.Year = this.datePipe.transform(dto.Year, 'yyyy-MM-dd');
+      dto.Year = this.datePipe.transform(dto.Year, this.format)
     }
 
     this.carsService.createCar(dto).subscribe(
       () => this.router.navigate(['/'])
-    );
+    )
   }
 
-  getErrorMessage(controlName: string) {
+  getErrorMessage(controlName: string): string {
     return this.form.controls[controlName].hasError('required') ? 'Поле обязательно для заполнения' :
       this.form.controls[controlName].hasError('min') ? 'не меньше 1' :
         this.form.controls['Name'].errors?.minlength || this.form.controls['Name'].errors?.maxlength ? 'от 3 до 50 символов' :
           ''
   }
 
-  resetFilter() {
-    this.form.reset();
+  resetFilter(): void {
+    this.form.reset()
   }
 
-  goToMainPage() {
-    this.router.navigate(['/'])
+  goToMainPage(): void {
+    this.router?.navigate(['/'])
   }
+
 }

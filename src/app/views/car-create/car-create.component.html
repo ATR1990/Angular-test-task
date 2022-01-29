@@ -94,12 +94,12 @@
         </div>
         <div class="row">
           <div class="col">
-            <mat-form-field class="w-100" dateFormat2>
+            <mat-form-field class="w-100" dateFormat>
               <mat-label>Год</mat-label>
-              <input matInput [min]="minDate" [matDatepicker]="picker3" formControlName="Year" readonly
+              <input matInput [min]="minDate" [matDatepicker]="picker" formControlName="Year" readonly
                      autocomplete="off">
-              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-              <mat-datepicker touchUi #picker3 disabled="false"></mat-datepicker>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>
               <mat-error *ngIf="form.controls['Year'].invalid">{{getErrorMessage('Year')}}</mat-error>
             </mat-form-field>
           </div>
