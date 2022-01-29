@@ -17,10 +17,11 @@ import {CarsService} from "@services/cars.service"
 })
 
 export class CarEditComponent implements OnInit, OnDestroy {
-  form!: FormGroup
-  minDate!: Date
+  list: string[] = ['Acceleration', 'Currency', 'Cylinders', 'Displacement', 'Horsepower', 'Miles_per_Gallon', 'Name', 'Origin', 'Price', 'Weight_in_lbs', 'Year']
   id: any
   format: string = 'yyyy-MM-dd'
+  form!: FormGroup
+  minDate!: Date
   private _unsubscribe$ = new Subject()
 
   constructor(
@@ -54,31 +55,12 @@ export class CarEditComponent implements OnInit, OnDestroy {
   }
 
   private _setValues(car: CarInterface): void {
-    const {
-      Acceleration,
-      Currency,
-      Cylinders,
-      Displacement,
-      Horsepower,
-      Miles_per_Gallon,
-      Name,
-      Origin,
-      Price,
-      Weight_in_lbs,
-      Year
-    } = car
+    this.list.forEach(key => this._formControls(car, key))
+  }
 
-    this.form.controls['Acceleration'].setValue(Acceleration)
-    this.form.controls['Currency'].setValue(Currency)
-    this.form.controls['Cylinders'].setValue(Cylinders)
-    this.form.controls['Displacement'].setValue(Displacement)
-    this.form.controls['Horsepower'].setValue(Horsepower)
-    this.form.controls['Miles_per_Gallon'].setValue(Miles_per_Gallon)
-    this.form.controls['Name'].setValue(Name)
-    this.form.controls['Origin'].setValue(Origin)
-    this.form.controls['Price'].setValue(Price)
-    this.form.controls['Weight_in_lbs'].setValue(Weight_in_lbs)
-    this.form.controls['Year'].setValue(Year)
+  private _formControls(car: CarInterface, key: string): void {
+    // @ts-ignore
+    this.form.controls[key].setValue(car[key])
   }
 
   private _getCar(): void {
