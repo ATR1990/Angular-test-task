@@ -39,19 +39,14 @@ export class CarEditComponent implements OnInit, OnDestroy {
   }
 
   private _createForm(): void {
-    this.form = this.fb.group({
-      Acceleration: [null, [Validators.required]],
-      Currency: ['', [Validators.required]],
-      Cylinders: [null, [Validators.required]],
-      Displacement: [null, [Validators.required]],
-      Horsepower: [null, [Validators.required]],
-      Miles_per_Gallon: [null, [Validators.required]],
-      Name: ['', [Validators.required]],
-      Origin: ['', [Validators.required]],
-      Price: [null, [Validators.required]],
-      Weight_in_lbs: [null, [Validators.required]],
-      Year: [null, [Validators.required]]
-    })
+    this.form = this.fb.group(
+      this._controlsConfig(this.list, [null, [Validators.required]])
+    )
+  }
+
+  private _controlsConfig(keyList: string[], value: any[]): object {
+    const map = new Map(keyList.map(key => ([key, value])))
+    return Object.fromEntries(map)
   }
 
   private _setValues(car: CarInterface): void {
