@@ -44,9 +44,7 @@ export class CarEditComponent implements OnInit, OnDestroy {
   }
 
   private _createForm(): void {
-    this.form = this.fb.group(
-      this._controlsConfig(this.list, [null, [Validators.required]])
-    )
+    this.form = this.fb.group(this._controlsConfig(this.list, [null, [Validators.required]]))
   }
 
   private _setValues(car: CarInterface): void {
