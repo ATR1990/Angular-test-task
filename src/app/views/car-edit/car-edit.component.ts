@@ -38,24 +38,20 @@ export class CarEditComponent implements OnInit, OnDestroy {
     this._getCar()
   }
 
+  private _controlsConfig(keyList: string[], value: any[]): object {
+    const map = new Map(keyList.map(key => ([key, value])))
+    return Object.fromEntries(map)
+  }
+
   private _createForm(): void {
     this.form = this.fb.group(
       this._controlsConfig(this.list, [null, [Validators.required]])
     )
   }
 
-  private _controlsConfig(keyList: string[], value: any[]): object {
-    const map = new Map(keyList.map(key => ([key, value])))
-    return Object.fromEntries(map)
-  }
-
   private _setValues(car: CarInterface): void {
-    this.list.forEach(key => this._formControls(car, key))
-  }
-
-  private _formControls(car: CarInterface, key: string): void {
     // @ts-ignore
-    this.form.controls[key].setValue(car[key])
+    this.list.forEach(key => this.form.controls[key].setValue(car[key]))
   }
 
   private _getCar(): void {
@@ -71,7 +67,7 @@ export class CarEditComponent implements OnInit, OnDestroy {
   private _editCar(dto: CarInterface): void {
     this.carsService.editCar(dto)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(() => this.router.navigate(['/']))
+      .subscribe(() => this.goToMainPage())
   }
 
   save(): void {

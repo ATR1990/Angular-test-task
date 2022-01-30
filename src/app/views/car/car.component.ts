@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnDestroy} from '@angular/core'
 import {Router} from "@angular/router"
 import {Subject} from "rxjs"
-import {takeUntil} from "rxjs/operators"
+import {takeUntil, tap} from "rxjs/operators"
 
 import {MatDialog} from "@angular/material/dialog"
 import {MatSnackBar} from "@angular/material/snack-bar"
@@ -47,7 +47,10 @@ export class CarComponent implements OnDestroy {
 
   private _deleteCar(id: number): void {
     this.carsService.deleteCar(id)
-      .pipe(takeUntil(this._unsubscribe$))
+      .pipe(
+        takeUntil(this._unsubscribe$),
+        tap(() => this.carsService.refresh$.next())
+      )
       .subscribe(
         () => this.dialogRef.close('deleted'),
         () => this.dialogRef.close()

@@ -60,7 +60,7 @@ export class CarCreateComponent implements OnInit, OnDestroy {
   private _createCar(dto: CarInterface): void {
     this.carsService.createCar(dto)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(() => this.router.navigate(['/']))
+      .subscribe(() => this.goToMainPage())
   }
 
   save(): void {
