@@ -6,9 +6,9 @@ import {takeUntil, tap} from "rxjs/operators"
 import {MatDialog} from "@angular/material/dialog"
 import {MatSnackBar} from "@angular/material/snack-bar"
 
-import {CarInterface} from "@models/car.interface"
-import {CarsService} from "@services/cars.service"
-import {ConfirmModalComponent} from "@views/confirm-modal/confirm-modal.component"
+import {CarInterface} from "@shared/models/car.interface"
+import {CarsService} from "@shared/services/cars.service"
+import {ConfirmModalComponent} from "@shared/index"
 
 @Component({
   selector: 'sk-car',

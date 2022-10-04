@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core'
 import {FormBuilder, FormGroup} from "@angular/forms"
 
-import {CarsService} from "@services/cars.service"
+import {CarsService} from "@shared/services/cars.service"
 
 @Component({
   selector: 'sk-search',

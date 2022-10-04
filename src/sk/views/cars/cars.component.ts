@@ -3,8 +3,8 @@ import {Router} from "@angular/router"
 import {takeUntil} from "rxjs/operators"
 import {Subject} from "rxjs"
 
-import {CarInterface} from "@models/car.interface"
-import {CarsService} from "@services/cars.service"
+import {CarInterface} from "@shared/models/car.interface"
+import {CarsService} from "@shared/services/cars.service"
 
 
 @Component({

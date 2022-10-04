@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core'
 import {HttpClient} from "@angular/common/http"
 import {Observable, Subject} from "rxjs"
 
-import {CarInterface} from "@models/car.interface"
+import {CarInterface} from "../models/car.interface"
+import {GET_CARS_LIST} from "@shared/constants/url"
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class CarsService {
-  private baseUrl = 'http://localhost:3000/cars'
   refresh$ = new Subject<void>()
   search$ = new Subject<string>()
 
@@ -17,24 +17,24 @@ export class CarsService {
   }
 
   getAllCars(q?: any): Observable<CarInterface[]> {
-    const url = q ? `${this.baseUrl}/?q=${q}` : this.baseUrl
+    const url = q ? `${GET_CARS_LIST}/?q=${q}` : GET_CARS_LIST
     return this.http.get<CarInterface[]>(url)
   }
 
   getCar(id: number): Observable<CarInterface> {
-    return this.http.get<CarInterface>(`${this.baseUrl}/${id}`)
+    return this.http.get<CarInterface>(`${GET_CARS_LIST}/${id}`)
   }
 
   createCar(dto: CarInterface): Observable<CarInterface> {
-    return this.http.post<CarInterface>(this.baseUrl, dto)
+    return this.http.post<CarInterface>(GET_CARS_LIST, dto)
   }
 
   editCar(dto: CarInterface): Observable<CarInterface> {
-    return this.http.put<CarInterface>(`${this.baseUrl}/${dto.id}`, dto)
+    return this.http.put<CarInterface>(`${GET_CARS_LIST}/${dto.id}`, dto)
   }
 
   deleteCar(id: number): Observable<CarInterface> {
-    return this.http.delete<CarInterface>(`${this.baseUrl}/${id}`)
+    return this.http.delete<CarInterface>(`${GET_CARS_LIST}/${id}`)
   }
 
 }

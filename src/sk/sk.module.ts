@@ -2,31 +2,16 @@ import {NgModule} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {HttpClientModule} from "@angular/common/http"
-import {SkRoutingModule} from "./sk-routing.module"
 import {FormsModule, ReactiveFormsModule} from "@angular/forms"
-import {DatePipe} from "@angular/common"
 
-import {MatCardModule} from "@angular/material/card"
-import {MatButtonModule} from "@angular/material/button"
-import {MatFormFieldModule} from "@angular/material/form-field"
-import {MatInputModule} from "@angular/material/input"
-import {MatIconModule} from "@angular/material/icon"
-import {MatTooltipModule} from "@angular/material/tooltip"
-import {MatDialogModule} from "@angular/material/dialog"
-import {MatSnackBarModule} from "@angular/material/snack-bar"
-import {MatDatepickerModule} from "@angular/material/datepicker"
-import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core"
-import {MatExpansionModule} from "@angular/material/expansion"
-
+import {SkRoutingModule} from "./sk-routing.module"
 import {SkComponent} from './sk.component'
 import {CarsComponent} from '@views/cars/cars.component'
 import {CarComponent} from '@views/car/car.component'
 import {CarEditComponent} from '@views/car-edit/car-edit.component'
 import {CarCreateComponent} from '@views/car-create/car-create.component'
 import {CarDetailedComponent} from '@views/car-detailed/car-detailed.component'
-import {ConfirmModalComponent} from '@views/confirm-modal/confirm-modal.component'
-import {SearchComponent} from '@views/search/search.component'
-import { DateFormatDirective } from './directives/date-format.directive';
+import {SharedModule} from "@shared/index"
 
 @NgModule({
   declarations: [
@@ -35,33 +20,16 @@ import { DateFormatDirective } from './directives/date-format.directive';
     CarComponent,
     CarCreateComponent,
     CarEditComponent,
-    CarDetailedComponent,
-    ConfirmModalComponent,
-    SearchComponent,
-    DateFormatDirective
+    CarDetailedComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    SkRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatExpansionModule
-  ],
-  providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'ru-Ru'},
-    DatePipe
+    SkRoutingModule,
+    SharedModule
   ],
   bootstrap: [SkComponent]
 })
