@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {HttpClientModule} from "@angular/common/http"
-import {AppRoutingModule} from "./app-routing.module"
+import {SkRoutingModule} from "./sk-routing.module"
 import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import {DatePipe} from "@angular/common"
 
@@ -18,7 +18,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker"
 import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core"
 import {MatExpansionModule} from "@angular/material/expansion"
 
-import {AppComponent} from './app.component'
+import {SkComponent} from './sk.component'
 import {CarsComponent} from '@views/cars/cars.component'
 import {CarComponent} from '@views/car/car.component'
 import {CarEditComponent} from '@views/car-edit/car-edit.component'
@@ -26,11 +26,11 @@ import {CarCreateComponent} from '@views/car-create/car-create.component'
 import {CarDetailedComponent} from '@views/car-detailed/car-detailed.component'
 import {ConfirmModalComponent} from '@views/confirm-modal/confirm-modal.component'
 import {SearchComponent} from '@views/search/search.component'
-import { DateFormatDirective } from './directives/date-format.directive'
+import { DateFormatDirective } from './directives/date-format.directive';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    SkComponent,
     CarsComponent,
     CarComponent,
     CarCreateComponent,
@@ -44,7 +44,7 @@ import { DateFormatDirective } from './directives/date-format.directive'
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppRoutingModule,
+    SkRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -63,7 +63,7 @@ import { DateFormatDirective } from './directives/date-format.directive'
     {provide: MAT_DATE_LOCALE, useValue: 'ru-Ru'},
     DatePipe
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [SkComponent]
 })
-export class AppModule {
+export class SkModule {
 }

@@ -1,4 +1,5 @@
 export interface CarInterface {
+  [key: string]: any;
   Acceleration: number;
   Currency: string;
   Cylinders: number;

@@ -5,14 +5,13 @@ import {DatePipe} from "@angular/common"
 import {takeUntil} from "rxjs/operators"
 import {Subject} from "rxjs"
 
-// @ts-ignore
-import {CarInterface} from "@types/car.interface"
+import {CarInterface} from "@models/car.interface"
 import {CarsService} from "@services/cars.service"
 
 @Component({
-  selector: 'app-car-edit',
+  selector: 'sk-car-edit',
   templateUrl: './car-edit.component.html',
-  styleUrls: ['./car-edit.component.css'],
+  styleUrls: ['./car-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -48,7 +47,6 @@ export class CarEditComponent implements OnInit, OnDestroy {
   }
 
   private _setValues(car: CarInterface): void {
-    // @ts-ignore
     this.list.forEach(key => this.form.controls[key].setValue(car[key]))
   }
 

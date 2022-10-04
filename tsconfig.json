@@ -6,9 +6,9 @@
     "paths": {
       "@env/*": ["environments/*"],
       "@assets/*": ["assets/*"],
-      "@types/*": ["app/types/*"],
-      "@views/*": ["app/views/*"],
-      "@services/*": ["app/services/*"]
+      "@models/*": ["sk/models/*"],
+      "@views/*": ["sk/views/*"],
+      "@services/*": ["sk/services/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

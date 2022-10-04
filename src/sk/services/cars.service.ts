@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core'
 import {HttpClient} from "@angular/common/http"
 import {Observable, Subject} from "rxjs"
 
-// @ts-ignore
-import {CarInterface} from "@types/car.interface"
+import {CarInterface} from "@models/car.interface"
 
 @Injectable({
   providedIn: 'root'

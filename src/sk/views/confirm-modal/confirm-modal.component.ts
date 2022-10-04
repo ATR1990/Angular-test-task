@@ -3,9 +3,9 @@ import {Component, Inject, EventEmitter, ChangeDetectionStrategy} from '@angular
 import {MAT_DIALOG_DATA} from "@angular/material/dialog"
 
 @Component({
-  selector: 'app-confirm-modal',
+  selector: 'sk-confirm-modal',
   templateUrl: './confirm-modal.component.html',
-  styleUrls: ['./confirm-modal.component.css'],
+  styleUrls: ['./confirm-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

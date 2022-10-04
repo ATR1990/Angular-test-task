@@ -4,9 +4,9 @@ import {FormBuilder, FormGroup} from "@angular/forms"
 import {CarsService} from "@services/cars.service"
 
 @Component({
-  selector: 'app-search',
+  selector: 'sk-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css'],
+  styleUrls: ['./search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

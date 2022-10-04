@@ -3,14 +3,13 @@ import {ActivatedRoute, Router} from "@angular/router"
 import {takeUntil} from "rxjs/operators"
 import {Subject} from "rxjs"
 
-// @ts-ignore
-import {CarInterface} from "@types/car.interface"
+import {CarInterface} from "@models/car.interface"
 import {CarsService} from "@services/cars.service"
 
 @Component({
-  selector: 'app-car-detailed',
+  selector: 'sk-car-detailed',
   templateUrl: './car-detailed.component.html',
-  styleUrls: ['./car-detailed.component.css'],
+  styleUrls: ['./car-detailed.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

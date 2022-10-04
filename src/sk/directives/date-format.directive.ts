@@ -15,7 +15,7 @@ const MY_FORMAT = {
 }
 
 @Directive({
-  selector: '[dateFormat]',
+  selector: '[skDateFormat]',
   providers: [
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMAT}
   ]

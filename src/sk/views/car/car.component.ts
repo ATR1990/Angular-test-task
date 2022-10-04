@@ -6,15 +6,14 @@ import {takeUntil, tap} from "rxjs/operators"
 import {MatDialog} from "@angular/material/dialog"
 import {MatSnackBar} from "@angular/material/snack-bar"
 
-// @ts-ignore
-import {CarInterface} from "@types/car.interface"
+import {CarInterface} from "@models/car.interface"
 import {CarsService} from "@services/cars.service"
 import {ConfirmModalComponent} from "@views/confirm-modal/confirm-modal.component"
 
 @Component({
-  selector: 'app-car',
+  selector: 'sk-car',
   templateUrl: './car.component.html',
-  styleUrls: ['./car.component.css'],
+  styleUrls: ['./car.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarComponent implements OnDestroy {
