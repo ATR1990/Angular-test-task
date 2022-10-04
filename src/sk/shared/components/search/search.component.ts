@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core'
-import {FormBuilder, FormGroup} from "@angular/forms"
+import {UntypedFormBuilder, UntypedFormGroup} from "@angular/forms"
 
 import {CarsService} from "@shared/services/cars.service"
 
@@ -11,11 +11,11 @@ import {CarsService} from "@shared/services/cars.service"
 })
 
 export class SearchComponent implements OnInit {
-  filterForm!: FormGroup
+  filterForm!: UntypedFormGroup
 
   constructor(
     private carsService: CarsService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
   }
 
@@ -36,7 +36,7 @@ export class SearchComponent implements OnInit {
 
   resetFilter(): void {
     this.filterForm.reset()
-    this.carsService.search$.next()
+    this.carsService.search$.next('')
   }
 
 }

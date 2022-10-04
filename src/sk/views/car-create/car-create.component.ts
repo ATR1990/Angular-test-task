@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from "@angular/core"
-import {FormBuilder, FormGroup, Validators} from "@angular/forms"
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms"
 import {DatePipe} from "@angular/common"
 import {Router} from "@angular/router"
 import {takeUntil} from "rxjs/operators"
@@ -16,7 +16,7 @@ import {CarsService} from "@shared/services/cars.service"
 })
 
 export class CarCreateComponent implements OnInit, OnDestroy {
-  form!: FormGroup
+  form!: UntypedFormGroup
   minDate!: Date
   format: string = 'yyyy-MM-dd'
   private _unsubscribe$ = new Subject()
@@ -25,7 +25,7 @@ export class CarCreateComponent implements OnInit, OnDestroy {
     private carsService: CarsService,
     private datePipe: DatePipe,
     private router: Router,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
   }
 
@@ -87,7 +87,7 @@ export class CarCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribe$.next()
+    this._unsubscribe$.next(true)
     this._unsubscribe$.complete()
   }
 

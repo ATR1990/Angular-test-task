@@ -61,7 +61,7 @@ export class CarsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribe$.next()
+    this._unsubscribe$.next(true)
     this._unsubscribe$.complete()
   }
 
