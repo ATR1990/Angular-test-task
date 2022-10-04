@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 import {HttpClient} from "@angular/common/http"
 import {Observable, Subject} from "rxjs"
 
-import {CarInterface} from "../models/car.interface"
+import {CarInterface} from "@shared/models/car.interface"
 import {GET_CARS_LIST} from "@shared/constants/url"
 
 @Injectable({
